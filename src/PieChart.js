@@ -3,26 +3,15 @@ import './PieChart.css';
 
 class PieChart extends Component {
   render() {
-    let myData = [{
-      angle: 1,
-      label: 'A'
-    },
-    {
-      angle: 2,
-      label: 'B'
-    },
-    {
-      angle: 3,
-      label: 'C'
-    }];
+    let data = this.props.data;
 
     return (
       <div className="row">
         <div className="col s6 left-align">
           <h4>{this.props.option}</h4>
           <ul>
-            { myData.map((datum) => <li key={myData.indexOf(datum)}>
-              Label: {datum.label} | Value : {datum.angle}
+            { data.map((datum) => <li key={data.indexOf(datum)}>
+              {datum.name} : {datum.value}
             </li>) }
           </ul>
         </div>
