@@ -1,17 +1,26 @@
 import React, { Component } from 'react';
 import $ from 'jquery';
-import Controls from './Controls';
 import PieChart from './PieChart';
 import './Charts.css';
+
+// helper function
+const objectToArray = function(objectIn) {
+  let properties = Object.keys(objectIn);
+  let values = Object.keys(objectIn).map(key => objectIn[key]);
+  let arrayOut = [];
+  for (let i = 0; i < Object.keys(objectIn).length; i++) {
+    let newObjElement = {};
+    newObjElement.name = properties[i];
+    newObjElement.value = values[i];
+    arrayOut.push(newObjElement);
+  };
+  return arrayOut;
+};
 
 class Charts extends Component {
   constructor(props) {
     super(props);
-
-    this.state = {
-      option: 0,
-      data: []
-    };
+    this.state = {};
   }
 
   componentDidMount() {
@@ -19,63 +28,36 @@ class Charts extends Component {
   }
 
   fetchData() {
-    $.ajax('/api/data').done(
-      function(retrievedData) {
-console.log("retrievedData: ", retrievedData);
-console.log("retrievedData length: ", retrievedData.length);
-        let names = Object.keys(retrievedData);
-console.log("names: ", names);
-        let values = Object.keys(retrievedData).map(key => retrievedData[key]);
-console.log("values: ", values);
-        let cleanedData = [];
-        for (let i = 0; i < Object.keys(retrievedData).length; i++) {
-          let newObjElement = {};
-          newObjElement.name = names[i];
-          newObjElement.value = values[i];
-          cleanedData.push(newObjElement);
-        };
-console.log('cleanedData: ', cleanedData);
-        this.setState({data: cleanedData});
+    $.ajax({
+      url: '/api/data',
+      dataType: 'json',
+      success: function(retrievedData) {
+console.log('retrievedData: ', retrievedData);
+        this.setState({data: retrievedData});
+console.log('new state: ', this.state.data);
+      }.bind(this),
+      error: function(xhr, status, err) {
+console.error('/api/data', status, err.toString());
       }.bind(this)
-    );
-  }
-
-  handleClick(o) {
-    let filteredData = this.state.data;
-    switch (o) {
-      case 1:
-        filteredData = filteredData.slice(1);
-        break;
-      case 2:
-        filteredData.slice(2);
-        break;
-      case 3:
-        filteredData.slice(3);
-        break;
-      default:
-        this.setState({data: filteredData});
-    }
-    this.setState({data: filteredData});
+    });
   }
 
   render() {
-    const options = [
-      'Crypto',
-      'Ethereum + tokens',
-      'Ethereum',
-      'Tokens'
-    ];
-
-    return (
-      <div className="Charts">
-        <div className="row">
-          <div className="col s12 center-align">
-            <Controls options={options} handleClick={this.handleClick.bind(this)} />
-          </div>
+console.log('charts rendered');
+    if (this.state.data) {
+console.log('charts rendered with state');
+      return (
+        <div className="Charts">
+          <PieChart data={this.state.data} />
         </div>
-        <PieChart option={this.state.option} data={this.state.data}/>
-      </div>
-    );
+      );
+    }
+    else {
+console.log('charts rendered with loading');
+      return (
+        <div>Loading...</div>
+      );
+    }
   }
 }
 

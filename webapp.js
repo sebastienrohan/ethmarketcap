@@ -9,31 +9,25 @@ app.use(express.static('build'));
 
 app.use(bodyParser.json());
 
-const test = [
-  {
-    a: 1,
-    b: 2
-  },{
-    a: 3,
-    b: 4
-  },{
-    a: 5,
-    b: 6
-  },{
-    a: 7,
-    b: 8
-  }
-];
-
-const cmcApi_1 = {
+const cmcApi_global = {
   host: 'api.coinmarketcap.com',
   port: '80',
   path: '/v1/global/',
   method: 'GET'
 };
 
-const externalApiCall = function(callback) {
-  const reqGet = http.request(cmcApi_1, function(res, err) {
+const coins = [
+  'ethereum',
+  'augur',
+  'golem'
+];
+
+const externalApiCall = function(coin, callback) {
+  const reqGet = http.request({
+   host: 'api.coinmarketcap.com',
+   path: '/v1/ticker/' + coin + '/',
+   method: 'GET'
+   }, function(res, err) {
     if (err) {
       console.log('API error: ', err);
     } else {
@@ -42,17 +36,34 @@ const externalApiCall = function(callback) {
       });
     }
   });
+
   reqGet.end();
+  console.log('called api for ' + coin);
   reqGet.on('error', function(e) {
     console.error(e);
   });
 }
 
+let completeData = [];
+
 app.get('/api/data', function(req, res) {
-    externalApiCall(
+    externalApiCall('ethereum',
+      // callback
       function(data) {
         data = JSON.parse(data);
-        res.json(data);
+        console.log('data: ', data);
+
+        // build the data to be returned to the client
+        completeData.push(
+          {
+            name: data[0].name,
+            marketcap: data[0].market_cap_usd,
+            change: data[0].percent_change_24h
+          }
+        );
+        console.log('completeData: ', completeData);
+        res.json(completeData);
+        completeData = [];
       }
     );
 });

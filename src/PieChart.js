@@ -3,17 +3,21 @@ import './PieChart.css';
 
 class PieChart extends Component {
   render() {
-    let data = this.props.data;
-
+console.log('pie rendered with data');
+  let data = this.props.data;
+console.log('data: ', data);
     return (
       <div className="row">
         <div className="col s6 left-align">
-          <h4>{this.props.option}</h4>
-          <ul>
-            { data.map((datum) => <li key={data.indexOf(datum)}>
-              {datum.name} : {datum.value}
-            </li>) }
-          </ul>
+          {data.map((coin) =>
+            <div>
+              <h4>
+                {coin.name}
+              </h4>
+              <div>{coin.marketcap}</div>
+              <div>{coin.change}</div>
+            </div>
+          )}
         </div>
       </div>
     );
