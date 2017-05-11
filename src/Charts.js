@@ -3,20 +3,6 @@ import $ from 'jquery';
 import PieChart from './PieChart';
 import './Charts.css';
 
-// helper function
-const objectToArray = function(objectIn) {
-  let properties = Object.keys(objectIn);
-  let values = Object.keys(objectIn).map(key => objectIn[key]);
-  let arrayOut = [];
-  for (let i = 0; i < Object.keys(objectIn).length; i++) {
-    let newObjElement = {};
-    newObjElement.name = properties[i];
-    newObjElement.value = values[i];
-    arrayOut.push(newObjElement);
-  };
-  return arrayOut;
-};
-
 class Charts extends Component {
   constructor(props) {
     super(props);

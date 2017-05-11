@@ -5,7 +5,7 @@ class PieChart extends Component {
   render() {
 console.log('pie rendered with data');
   let data = this.props.data;
-console.log('data: ', data);
+console.log('rendered data: ', data);
     return (
       <div className="row">
         <div className="col s6 left-align">
