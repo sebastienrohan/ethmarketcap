@@ -85,8 +85,8 @@ const asyncCall = function() {
   );
 }
 
-// call external APIs once per minute
-setInterval(asyncCall, 60000);
+// call external APIs every 5 minutes
+setInterval(asyncCall, 300000);
 
 // send data to client
 app.get('/api/data', function(req, res) {

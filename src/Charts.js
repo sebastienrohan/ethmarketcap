@@ -10,7 +10,7 @@ class Charts extends Component {
   }
 
   componentDidMount() {
-    this.fetchData();
+    setInterval(this.fetchData.bind(this), 5000);
   }
 
   fetchData() {
@@ -23,7 +23,7 @@ console.log('retrievedData: ', retrievedData);
 console.log('new state: ', this.state.data);
       }.bind(this),
       error: function(xhr, status, err) {
-console.error('/api/data', status, err.toString());
+        console.error('/api/data', status, err.toString());
       }.bind(this)
     });
   }
