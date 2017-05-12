@@ -32,23 +32,7 @@ const coins = [
 ];
 
 // initialize final array
-let dataToSend = [];
-
-/*
-// add data for this coin to the final array (function used in externalCall)
-const buildDataToSend = function(receivedData) {
-  let coinData = JSON.parse(receivedData);
-  console.log('coin data: ', receivedData);
-  // build the data to be returned to the client
-  dataToSend.push(
-    {
-      name: coinData[0].name,
-      marketcap: coinData[0].market_cap_usd,
-      change: coinData[0].percent_change_24h
-    }
-  );
-};
-*/
+let cachedData = [];
 
 // central function that will be applied by async to each coin
 const externalCall = function(coin, doneCallback) {
@@ -84,19 +68,8 @@ const externalCall = function(coin, doneCallback) {
   });
 };
 
-/*
-// final callback function for async
-const sendData = function(err, dataToSend) {
-  if (err) {
-    console.log('API error: ', err);
-  } else {
-    // send to client
-    console.log('dataToSend: ', dataToSend);
-  }
-};
-*/
-
-app.get('/api/data', function(req, res) {
+// handle multiple asynchronous API calls
+const asyncCall = function() {
   async.map(
     coins,
     externalCall,
@@ -104,12 +77,21 @@ app.get('/api/data', function(req, res) {
       if (err) {
         console.log('API error: ', err);
       } else {
-        // send to client
-        console.log('dataToSend: ', dataToSend);
-        res.json(dataToSend);
+        // cache data
+        cachedData = dataToSend;
+        console.log('New data cached: ', cachedData);
       }
     }
   );
+}
+
+// call external APIs once per minute
+setInterval(asyncCall, 60000);
+
+// send data to client
+app.get('/api/data', function(req, res) {
+  res.json(cachedData);
+  console.log('Sent data to client: ', cachedData);
 });
 
 /* non-async implementation
