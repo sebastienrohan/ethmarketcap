@@ -50,11 +50,17 @@ const externalCall = function(coin, doneCallback) {
       res.on('data', function(receivedData) {
         receivedData = JSON.parse(receivedData);
         console.log('coin data: ', receivedData);
-        tempData = {
-          name: receivedData[0].name,
-          marketcap: receivedData[0].market_cap_usd,
-          change: receivedData[0].percent_change_24h
+        // check if coin data is well-formed
+        if (receivedData[0]) {
+          tempData = {
+            name: receivedData[0].name,
+            marketcap: receivedData[0].market_cap_usd,
+            change: receivedData[0].percent_change_24h
+          }
+        } else {
+          console.log('Coin not found, maybe the id has changed');
         }
+
         // callback for the central function : add data for this coin to the final array
         return doneCallback(null, tempData);
       });
@@ -62,9 +68,8 @@ const externalCall = function(coin, doneCallback) {
   );
   // send the external API request
   reqGet.end();
-  console.log('called api for ' + coin);
-  reqGet.on('error', function(e) {
-    console.error(e);
+  reqGet.on('error', function(err) {
+    console.log('API error: ', err);
   });
 };
 
@@ -73,25 +78,31 @@ const asyncCall = function() {
   async.map(
     coins,
     externalCall,
-    function(err, dataToSend) {
+    function(err, dataToSend /* the array in which each tempData object is placed */) {
       if (err) {
-        console.log('API error: ', err);
+        console.log('Async call error: ', err);
+        return(err);
       } else {
         // cache data
         cachedData = dataToSend;
-        console.log('New data cached: ', cachedData);
       }
     }
   );
 }
 
 // call external APIs every 5 minutes
-setInterval(asyncCall, 300000);
+// setInterval(asyncCall, 300000);
+asyncCall();
 
 // send data to client
-app.get('/api/data', function(req, res) {
-  res.json(cachedData);
-  console.log('Sent data to client: ', cachedData);
+app.get('/api/data', function(req, res, next) {
+  // check if data is complete
+  if (cachedData.length !== coins.length) {
+    console.log('Problem with Coinmarketcap API (maybe the URL changed)');
+    return next();
+  } else {
+    res.json(cachedData);
+  }
 });
 
 /* non-async implementation

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Charts from './Charts';
+import Container from './Container';
 import './App.css';
 
 class App extends Component {
@@ -9,7 +9,7 @@ class App extends Component {
         <div className="App-header">
           <h1>Ethereum Ecosystem Market Cap</h1>
         </div>
-        <Charts />
+        <Container />
       </div>
     );
   }
