@@ -10,7 +10,7 @@ class Container extends Component {
     this.state = {connectionStatus: 'Loading...'};
   }
 
-  componentDidMount() {
+  componentWillMount() {
     // fetch data from server every 10 seconds
     setInterval(this.fetchData.bind(this), 5000);
   }

@@ -19,16 +19,16 @@ const cmcApi_global = {
 
 // CoinMarketCap API names for the coins
 const coins = [
+  'bitcoin',
   'ethereum',
   'augur',
   'golem-network-tokens',
-  /*'gnosis-gno',
+  'gnosis-gno',
   'digixdao',
   'singulardtv',
   'iconomi',
   'firstblood',
-  'melon',
-  'tokencard'*/
+  'melon'
 ];
 
 // initialize final array
