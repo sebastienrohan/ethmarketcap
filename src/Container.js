@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import $ from 'jquery';
 import Charts from './Charts';
 import Footer from './Footer';
-import './Container.css';
+import './container.css';
 
 class Container extends Component {
   constructor(props) {
@@ -11,8 +11,9 @@ class Container extends Component {
   }
 
   componentWillMount() {
+    setTimeout(this.fetchData.bind(this), 500);
     // fetch data from server every 5 minutes
-    setInterval(this.fetchData.bind(this), 2000); // 300000
+    setInterval(this.fetchData.bind(this), 300000);
   }
 
   fetchData() {
@@ -20,13 +21,13 @@ class Container extends Component {
       url: '/api/data',
       dataType: 'json',
       success: function(retrievedData) {
-        this.setState({data: retrievedData, connectionStatus: 'Connected'});
+        this.setState({data: retrievedData, connectionStatus: 'Connected to API'});
       }.bind(this),
       error: function(xhr, status, err) {
         if (err === 'Internal Server Error' || err === 'Not Found') {
-          this.setState({connectionStatus: 'Couldn\'t reach Coinmarketcap API'});
+          this.setState({data: {}, connectionStatus: 'Couldn\'t reach Coinmarketcap API'});
         } else {
-          this.setState({connectionStatus: 'Couldn\'t connect to server'});
+          this.setState({data: {}, connectionStatus: 'Couldn\'t connect to server'});
         }
       }.bind(this)
     });
@@ -36,14 +37,21 @@ class Container extends Component {
     // render charts if data is received from server
     if (this.state.data) {
       return (
-        <div className="Charts">
+        <div >
           <Charts data={this.state.data} />
           <Footer connectionStatus={this.state.connectionStatus} />
         </div>
       );
     } else {
       return (
-        <Footer connectionStatus={this.state.connectionStatus} />
+        <div>
+          <img
+            src="./ethereum.png"
+            alt="Ethereum logo"
+            className="responsive-img loader"
+          />
+          <Footer connectionStatus={this.state.connectionStatus} />
+        </div>
       );
     }
   }

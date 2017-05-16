@@ -8,15 +8,6 @@ app.use(express.static('build'));
 // to parse JSON
 app.use(bodyParser.json());
 
-/*
-const cmcApi_global = {
-  host: 'api.coinmarketcap.com',
-  port: '80',
-  path: '/v1/global/',
-  method: 'GET'
-};
-*/
-
 // CoinMarketCap API names for the coins
 const coins = [
   'bitcoin',
@@ -90,9 +81,10 @@ const asyncCall = function() {
   );
 }
 
-// call external APIs every 5 minutes
-// setInterval(asyncCall, 300000);
+// fetch initial data
 asyncCall();
+// call external APIs every 5 minutes
+setInterval(asyncCall, 300000);
 
 // send data to client
 app.get('/api/data', function(req, res, next) {
@@ -104,56 +96,6 @@ app.get('/api/data', function(req, res, next) {
     res.json(cachedData);
   }
 });
-
-/* non-async implementation
-
-const externalApiCall = function(coin, callback) {
-  const reqGet = http.request({
-   host: 'api.coinmarketcap.com',
-   path: '/v1/ticker/' + coin + '/',
-   method: 'GET'
- }, function(err, res) {
-    if (err) {
-      console.log('API error: ', err);
-    } else {
-      res.on('data', function(data) {
-        callback(data);
-      });
-    }
-  });
-
-  reqGet.end();
-  console.log('called api for ' + coin);
-  reqGet.on('error', function(e) {
-    console.error(e);
-  });
-}
-
-app.get('/api/data', function(req, res) {
-  // call API for each coin in the array
-  coins.forEach((coin) => {
-    externalApiCall(coin,
-      // callback function to execute after each API call
-      function(data) {
-        data = JSON.parse(data);
-        console.log('data: ', data);
-        // build the data to be returned to the client
-        completeData.push(
-          {
-            name: data[0].name,
-            marketcap: data[0].market_cap_usd,
-            change: data[0].percent_change_24h
-          }
-        );
-        console.log('partial completeData: ', completeData);
-        // send data to the client
-        res.json(completeData);
-      }
-    );
-  });
-});
-
-*/
 
 // launch the server
 const server = app.listen(3000, function () {

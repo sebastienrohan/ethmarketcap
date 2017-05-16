@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import Container from './Container';
-import './App.css';
+import './app.css';
 
 class App extends Component {
   render() {
     return (
-      <div className="App">
-        <div className="App-header">
-          <h1>Ethereum Ecosystem Market Cap</h1>
-        </div>
+      <div>
+        <nav>
+          <div className="nav-wrapper">
+            <span className="brand-logo">Ethereum Ecosystem Market Cap</span>
+          </div>
+        </nav>
         <Container />
       </div>
     );
