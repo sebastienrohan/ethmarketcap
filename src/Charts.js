@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryPie } from 'victory';
+import { VictoryLabel, VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryPie } from 'victory';
 import './Charts.css';
 
 class Charts extends Component {
   render() {
 
   let data = this.props.data;
-  let btc = Number(data[0].marketcap);
-  let eth = Number(data[1].marketcap);
+  let btcCap = Number(data[0].marketcap);
+  let btcLabel = `$ ${Math.round(btcCap / 10000000) / 100} B`;
+  let ethCap = Number(data[1].marketcap);
+  let ethLabel = `$ ${Math.round(ethCap / 10000000) / 100} B`;
   let tokenCap = 0;
   let plotTokenData = [];
   let tokenData = data;
@@ -20,81 +22,100 @@ class Charts extends Component {
       y: Number(tokenData[i].marketcap)
     });
   }
+  let tokenLabel = `$ ${Math.round(tokenCap / 10000000) / 100} B`;
 
     return (
       <div className="row">
-        <div className="col s6 left-align">
+        <div className="col s6">
           <div>
-            <h4>ETH vs BTC</h4>
-            <VictoryPie
-              animate={{ duration: 2000 }}
-              theme={VictoryTheme.material}
-              colorScale={[
-                "#D85F49",
-                "#F66D3B",
-                "#D92E1D",
-                "#D73C4C",
-                "#FFAF59",
-                "#E28300",
-                "#F6A57F"
-              ]}
-              data={
-                [{coin: "Ether", marketcap: eth},
-                {coin: "Bitcoin", marketcap: btc}]
-              }
-              x="coin"
-              y="marketcap"
-              style={{
-                labels: {fontSize: 18}
-              }}
-             />
+            <svg viewBox="0 0 400 400" >
+              <VictoryPie
+                animate={{ duration: 2000 }}
+                theme={VictoryTheme.material}
+                innerRadius={80}
+                cornerRadius={10}
+                colorScale={["blue" , "orange"]}
+                style={{
+                  data: {stroke: "#fff", strokeWidth: 2},
+                  labels: {fontSize: 18}
+                }}
+                data={
+                  [{coin: ethLabel, marketcap: ethCap},
+                  {coin: btcLabel, marketcap: btcCap}]
+                }
+                x="coin"
+                y="marketcap"
+                standalone={false}
+                width={400} height={400}
+               />
+               <VictoryLabel
+                textAnchor="middle" verticalAnchor="middle"
+                x={200} y={200}
+                style={{fontSize: 16}}
+                text="ETH vs BTC"
+              />
+            </svg>
           </div>
         </div>
         <div className="col s6">
           <div>
-            <h4>ETH tokens vs ETH</h4>
-            <VictoryPie
-              animate={{ duration: 2000 }}
-              theme={VictoryTheme.material}
-              innerRadius={80}
-              cornerRadius={10}
-              colorScale={["blue" , "green"]}
-              data={
-                [{coin: "Tokens", marketcap: tokenCap},
-                {coin: "Ether", marketcap: eth}]
-              }
-              x="coin"
-              y="marketcap"
-              style={{
-                data: {stroke: "#fff", strokeWidth: 2},
-                labels: {fontSize: 12},
-                parent: {border: "1px solid #ccc"}
-              }}
-             />
+            <svg viewBox="0 0 400 400" >
+              <VictoryPie
+                animate={{ duration: 2000 }}
+                theme={VictoryTheme.material}
+                innerRadius={80}
+                cornerRadius={10}
+                colorScale={["green" , "blue"]}
+                style={{
+                  data: {stroke: "#fff", strokeWidth: 2},
+                  labels: {fontSize: 18}
+                }}
+                data={
+                  [{coin: tokenLabel, marketcap: tokenCap},
+                  {coin: ethLabel, marketcap: ethCap}]
+                }
+                x="coin"
+                y="marketcap"
+                standalone={false}
+                width={400} height={400}
+               />
+               <VictoryLabel
+                textAnchor="middle" verticalAnchor="middle"
+                x={200} y={200}
+                style={{fontSize: 14}}
+                text="ETH tokens vs ETH"
+              />
+            </svg>
+
           </div>
         </div>
         <div className="col s12">
           <div>
-            <h4>ETH Tokens</h4>
             <VictoryChart
               animate={{ duration: 2000 }}
               theme={VictoryTheme.material}
-              domainPadding={80}>
-              <VictoryAxis />
+            >
+              <VictoryAxis
+                style={{
+                  tickLabels: {fontSize: 6, padding: 6}
+                }}
+               />
               <VictoryAxis
                 dependentAxis
-                // tickFormat specifies how ticks should be displayed
-                tickFormat={(x) => (`$${x / 1000000}M`)}
+                tickFormat={(x) => (`$ ${x / 1000000} M`)}
                 style={{
-                  tickLabels: {fontSize: 6, padding: 10}
+                  tickLabels: {fontSize: 7}
                 }}
               />
               <VictoryBar
+                style={{
+                  data: {fill: "red"}, // or green if % > 0
+                  labels: {fontSize: 5}
+                }}
                 data={plotTokenData}
-                // data accessor for x values
                 x="x"
-                // data accessor for y values
                 y="y"
+                labels={tokenData.map((token) => (`${token.change} %`))}
               />
             </VictoryChart>
           </div>

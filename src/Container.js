@@ -11,8 +11,8 @@ class Container extends Component {
   }
 
   componentWillMount() {
-    // fetch data from server every 10 seconds
-    setInterval(this.fetchData.bind(this), 5000);
+    // fetch data from server every 5 minutes
+    setInterval(this.fetchData.bind(this), 2000); // 300000
   }
 
   fetchData() {
