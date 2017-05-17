@@ -10,7 +10,12 @@ class Footer extends Component {
             {this.props.connectionStatus}
           </span>
           <span className="right">
-            Credits: <a href="https://coinmarketcap.com/" target="_blank">Coinmarketcap</a> & <a href="https://twitter.com/sebrohan" target="_blank">@Sebrohan</a>
+            Made by: <a
+              href="https://twitter.com/sebrohan"
+              target="_blank">@Sebrohan
+            </a> with <a
+              href="https://coinmarketcap.com/"
+              target="_blank">Coinmarketcap API</a> 
           </span>
         </div>
       </footer>
