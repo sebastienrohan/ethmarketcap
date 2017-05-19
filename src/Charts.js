@@ -29,7 +29,6 @@ class Charts extends Component {
           <div>
             <svg viewBox="0 0 400 400" >
               <VictoryPie
-                animate={{ duration: 2000 }}
                 theme={VictoryTheme.material}
                 innerRadius={80}
                 cornerRadius={10}
@@ -60,7 +59,6 @@ class Charts extends Component {
           <div>
             <svg viewBox="0 0 400 400" >
               <VictoryPie
-                animate={{ duration: 2000 }}
                 theme={VictoryTheme.material}
                 innerRadius={80}
                 cornerRadius={10}
