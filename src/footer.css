@@ -36,12 +36,17 @@
 .orange-square {
   height: 30px;
   width: 30px;
+  border-radius: 4px;
+  margin-right: 8px;
   background: orange;
+  color: black;
 }
 
 .blue-square {
   height: 30px;
   width: 30px;
+  border-radius: 4px;
+  margin-right: 8px;
   background: blue;
   color: white;
 }
@@ -49,6 +54,7 @@
 .green-square {
   height: 30px;
   width: 30px;
+  border-radius: 4px;
   background: green;
   color: white;
 }

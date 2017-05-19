@@ -25,7 +25,7 @@ class Charts extends Component {
   let tokenLabel = `$ ${Math.round(tokenCap / 10000000) / 100} B`;
 
     return (
-      <div className="row" style={{ marginTop: '8%' }}>
+      <div className="row" style={{ marginTop: '6%' }}>
         <div className="col s12 m6 l4 animated slideInLeft">
           <div className="chart">
             <svg viewBox="0 0 400 400" >
