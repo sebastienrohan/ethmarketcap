@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { VictoryLabel, VictoryBar, VictoryChart, VictoryAxis, VictoryTheme, VictoryPie } from 'victory';
+import './charts.css';
 
 class Charts extends Component {
   render() {
@@ -26,7 +27,7 @@ class Charts extends Component {
     return (
       <div className="row" style={{ marginTop: '8%' }}>
         <div className="col s12 m6 l4 animated slideInLeft">
-          <div>
+          <div className="chart">
             <svg viewBox="0 0 400 400" >
               <VictoryPie
                 theme={VictoryTheme.material}
@@ -56,7 +57,7 @@ class Charts extends Component {
           </div>
         </div>
         <div className="col s12 m6 l4 animated slideInUp">
-          <div>
+          <div className="chart">
             <svg viewBox="0 0 400 400" >
               <VictoryPie
                 theme={VictoryTheme.material}
@@ -86,7 +87,7 @@ class Charts extends Component {
           </div>
         </div>
         <div className="col s12 m6 l4 animated slideInRight">
-          <div>
+          <div className="chart chart-bars">
             <VictoryChart
               animate={{ duration: 1000 }}
               theme={VictoryTheme.material}

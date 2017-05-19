@@ -1,0 +1,8 @@
+@media only screen and (max-width: 600px) {
+  .chart {
+    padding-left: 28px;
+  }
+  .chart-bars {
+    margin-bottom: 128px;
+  }
+}
