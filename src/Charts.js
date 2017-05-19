@@ -24,8 +24,8 @@ class Charts extends Component {
   let tokenLabel = `$ ${Math.round(tokenCap / 10000000) / 100} B`;
 
     return (
-      <div className="row" style={{ marginTop: '140px' }}>
-        <div className="col s4 animated slideInLeft">
+      <div className="row" style={{ marginTop: '8%' }}>
+        <div className="col s12 m6 l4 animated slideInLeft">
           <div>
             <svg viewBox="0 0 400 400" >
               <VictoryPie
@@ -55,7 +55,7 @@ class Charts extends Component {
             </svg>
           </div>
         </div>
-        <div className="col s4 animated slideInUp">
+        <div className="col s12 m6 l4 animated slideInUp">
           <div>
             <svg viewBox="0 0 400 400" >
               <VictoryPie
@@ -85,7 +85,7 @@ class Charts extends Component {
             </svg>
           </div>
         </div>
-        <div className="col s4 animated slideInRight">
+        <div className="col s12 m6 l4 animated slideInRight">
           <div>
             <VictoryChart
               animate={{ duration: 1000 }}

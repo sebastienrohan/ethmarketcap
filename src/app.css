@@ -6,3 +6,9 @@ nav .nav-wrapper {
 nav .brand-logo {
   color: #555;
 }
+
+@media only screen and (max-width: 600px) {
+  nav .brand-logo {
+    font-size: 1.3rem;
+  }
+}
